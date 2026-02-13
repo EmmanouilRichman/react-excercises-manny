@@ -1,16 +1,25 @@
 import { useState } from 'react'
 
+const StatisticsLine = ({text, value}) => {
+  return (
+    <div>
+      <p>{text} {value}</p>
+    </div>
+  )
+
+}
+
 const Statistics = ({good,neutral,bad,all}) => {
 
   if (all > 0){
     return(
       <div>
-        <p>good {good}</p>
-        <p>neutral {neutral}</p>
-        <p>bad {bad}</p>
-        <p>all {all}</p>
-        <p>average { all > 0 ? (good - bad)/all  : 0 }</p>
-        <p>good {good > 1 ? (good / all) * 100 : 0}%</p>
+        <StatisticsLine text = 'good' value = {good}/>
+        <StatisticsLine text = 'neutral' value = {neutral}/>
+        <StatisticsLine text = 'bad' value = {bad}/>
+        <StatisticsLine text = 'all' value = {all}/>
+        <StatisticsLine text = 'average' value = { all > 0 ? (good - bad)/all  : 0 }/>
+        <StatisticsLine text = 'positive' value = {good > 1 ? (good / all) * 100 + '%' : 0 + '%'}/>
       </div>
     )
   }
