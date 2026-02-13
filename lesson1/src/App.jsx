@@ -2,9 +2,7 @@ import { useState } from 'react'
 
 const StatisticsLine = ({text, value}) => {
   return (
-    <div>
-      <p>{text} {value}</p>
-    </div>
+      <td>{text} {value}</td>
   )
 
 }
@@ -13,22 +11,18 @@ const Statistics = ({good,neutral,bad,all}) => {
 
   if (all > 0){
     return(
-      <div>
-        <table>
+        <tbody>
           <tr><StatisticsLine text = 'good' value = {good}/></tr>
           <tr><StatisticsLine text = 'neutral' value = {neutral}/></tr>
           <tr><StatisticsLine text = 'bad' value = {bad}/></tr>
           <tr><StatisticsLine text = 'all' value = {all}/></tr>
-          <tr> <StatisticsLine text = 'average' value = { all > 0 ? (good - bad)/all  : 0 }/></tr>
+          <tr><StatisticsLine text = 'average' value = { all > 0 ? (good - bad)/all  : 0 }/></tr>
           <tr><StatisticsLine text = 'positive' value = {good > 1 ? (good / all) * 100 + '%' : 0 + '%'}/></tr>
-        </table>
-      </div>
+        </tbody>
     )
   }
   return(
-    <div>
-      <p>No feedback given!</p>
-    </div>
+    <tbody><tr><td>No feedback given!</td></tr></tbody>
   )
 }
 
@@ -49,6 +43,7 @@ const App = () => {
   const [bad, setBad] = useState(0)
   const [all, setAll] = useState(0)
   const [selected, setSelected] = useState(0)
+  const [votes, setVote] = useState(Array(8).fill(0))
 
   const handleGoodClick = () => {
     setGood(good + + 1)
@@ -73,9 +68,15 @@ const App = () => {
     setNeutral(0)
   }
 
+  const handleVotesClick = () => {
+      const copy = [...votes]
+      copy[selected] += 1
+      setVote(copy)
+      console.log(votes[selected])
+  }
+
   const getAnecdote = () => {
     let position = Math.floor(Math.random() * anecdotes.length - 0)
-    console.log(position)
     setSelected(position)
   }
 
@@ -87,13 +88,15 @@ const App = () => {
       <button onClick={handleBadClick}>bad </button>
       <button onClick={handleResetClick}>Reset </button>
 
-
       <h2>Statistics</h2>
-      <Statistics good={good} neutral={neutral} bad={bad} all={all}/>
+      <table>
+        <Statistics good={good} neutral={neutral} bad={bad} all={all}/>
+      </table>
 
       <h2>Random Anecdote!</h2>
+      <p>{anecdotes[selected]} has {votes[selected]} votes</p>
+      <button onClick={handleVotesClick}>vote</button>
       <button onClick={getAnecdote}>Get Anecdote</button>
-      <p>{anecdotes[selected]}</p>
     </div>
   )
 }
