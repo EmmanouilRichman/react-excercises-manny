@@ -79,7 +79,23 @@ const App = () => {
     let position = Math.floor(Math.random() * anecdotes.length - 0)
     setSelected(position)
   }
+  
+  const findMostVotes = () => {
+    /* find anecdote with most votes */
+    let maxNumber = 0
+    let maxIndex = 0
 
+    for(let i = 0; i < anecdotes.length;i++){
+      if (votes[i] > maxNumber){
+        maxNumber = votes[i]
+        maxIndex = i
+      }
+    }
+    if (maxNumber == 0){
+      return 'No Votes yet!'
+    }
+    return anecdotes[maxIndex] + ' has ' + votes[maxIndex] + ' votes'
+  }
   return (
     <div>
       <h2>Give Feedback</h2>
@@ -97,6 +113,9 @@ const App = () => {
       <p>{anecdotes[selected]} has {votes[selected]} votes</p>
       <button onClick={handleVotesClick}>vote</button>
       <button onClick={getAnecdote}>Get Anecdote</button>
+
+      <h2>Anecodote With Most Votes</h2>
+      <p>{findMostVotes()}</p>
     </div>
   )
 }
